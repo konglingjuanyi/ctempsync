@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="syncTaskServer" class="com.cmread.cmu.css.task.SyncTaskServer">
+		<property name="syncTaskManager" ref="syncTaskManager"/>
+		<property name="taskEngine" ref="taskEngine"/>
+	</bean>
+	
+	<bean id="syncTaskManager"
+		class="com.cmread.cmu.css.task.manager.SyncTaskManagerImpl">
+		<property name="taskPersistent" ref="syncTaskPersistent"/>
+		<property name="taskConfigManager" ref="taskConfigManager"/>
+		<property name="taskEventNotifier" ref="taskEventNotifier"/>
+		<property name="sqlExecutorManager" ref="sqlExecutorManager" />
+	</bean>
+	
+	<bean id="syncTaskRecordLog" class="com.cmread.cmu.css.task.manager.SyncTaskRecordLogger">
+		<property name="taskEventNotifier" ref="taskEventNotifier"/>
+	</bean>
+	
+	<bean id="taskEventNotifier" class="com.cmread.cmu.css.task.schedule.TaskEventNotifier" />
+	
+	<bean id="taskEngine"
+		class="com.cmread.cmu.css.task.schedule.TaskEngineImpl">
+		<property name="taskQueueModel" ref="relatedContentQueueModel"/>
+		<property name="taskEventNotifier" ref="taskEventNotifier"/>
+	</bean>
+
+	<!-- 
+	<bean id="fifoQueueModel" class="com.cmread.cmu.css.task.schedule.FIFOTaskQueue">
+		<property name="taskExecutor" ref="priorityTaskExecutor"></property>
+	</bean>
+	 -->
+	 
+	<bean id="relatedContentQueueModel" class="com.cmread.cmu.css.task.schedule.ContentRelatedTaskQueue" destroy-method="close">
+		<property name="taskExecutor" ref="priorityTaskExecutor"></property>
+	</bean>
+	
+	<bean id="priorityTaskExecutor" class="com.cmread.cmu.css.task.executor.PrioritySyncTaskExecutor" destroy-method="close">
+		<property name="threadPoolSize" value="${task.priorityexecutor.threadpoolsize}"/>
+	</bean>
+	
+	<bean id="sqlExecutorManager" class="com.cmread.cmu.css.db.asyncsql.SqlTaskExecutorServiceRegistry">
+		<property name="sqlExecutorSources"> 
+			<map>
+				<entry key="common" value-ref="commonSqlExecutorService"/>
+				<entry key="book" value-ref="bookSqlExecutorService"/> 
+				<entry key="cartoon" value-ref="cartoonSqlExecutorService"/>
+				<!-- <entry key="memory" value-ref="memorySqlExecutorService"/> -->
+			</map>
+		</property>
+	</bean>
+	
+	<!-- 
+	<bean id="memorySqlExecutorService" class="com.cmread.cmu.css.db.asyncsql.SqlTaskExecutorService">
+		<property name="dataSource" ref="memoryDataSource"/>
+		<property name="sqlTaskExecutor" ref="sqlTaskExecutor"/>
+	</bean>
+	 -->
+	 
+	<bean id="commonSqlExecutorService" class="com.cmread.cmu.css.db.asyncsql.SqlTaskExecutorService">
+		<property name="dataSource" ref="commonDataSource"/>
+		<property name="sqlTaskExecutor" ref="sqlTaskExecutor"/>
+	</bean>
+	
+	<bean id="bookSqlExecutorService" class="com.cmread.cmu.css.db.asyncsql.SqlTaskExecutorService">
+		<property name="dataSource" ref="bookDataSource"/>
+		<property name="sqlTaskExecutor" ref="sqlTaskExecutor"/>
+	</bean>
+	
+	<bean id="cartoonSqlExecutorService" class="com.cmread.cmu.css.db.asyncsql.SqlTaskExecutorService">
+		<property name="dataSource" ref="cartoonDataSource"/>
+		<property name="sqlTaskExecutor" ref="sqlTaskExecutor"/>
+	</bean>
+
+	<bean id="sqlTaskExecutor" class="com.cmread.cmu.css.db.asyncsql.PriorityLimitSqlTaskExecutor" destroy-method="close">
+		<property name="sqlNumberPerSecond" value="${sql.limit.numbersPerSecond}"/>
+		<property name="proxyedSqlExecutor" ref="pooledSqlTaskExecutor"/>
+	</bean>	
+	
+	<bean id="pooledSqlTaskExecutor" class="com.cmread.cmu.css.db.asyncsql.PriorityPooledSqlTaskExecutor" destroy-method="close">
+		<property name="threadPoolSize" value="${sql.priorityexecutor.threadpoolsize}"/>
+	</bean>	
+	
+	<bean id="syncTaskPersistent" class="com.cmread.cmu.css.task.manager.SyncTaskDBPersistent">
+		<property name="dataSource" ref="commonDataSource"/>
+		<property name="globalSwitch" value="${persistent.global.switch}"/>
+	</bean>
+	
+</beans>

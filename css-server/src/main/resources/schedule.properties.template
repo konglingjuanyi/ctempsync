@@ -1,0 +1,26 @@
+package.trigger = <%= env[:package_trigger] || "true" %>
+package.interval = <%= env[:package_interval] || 10000 %>
+
+notice.trigger = <%= env[:notice_trigger] || "true" %>
+notice.interval = <%= env[:notice_interval] || 10000 %>
+
+review.trigger = <%= env[:review_trigger] || "true" %>
+review.interval = <%= env[:review_interval] || 50000 %>
+
+bookrank.trigger = <%= env[:bookrank_trigger] || "true" %>
+bookrank.interval = <%= env[:bookrank_interval] || 50000 %>
+
+task-clear.trigger = <%= env[:task_clear_trigger] || "true" %>
+task-clear.reserveDays = <%= env[:task_clear_reserveDays] || 7 %>
+
+mmlogsync.trigger = <%= env[:mmlogsync_trigger] || "true" %>
+mmlogsync.cron = <%= env[:mmlogsync_cron] || "0 0/30 * * * ?" %>
+
+onoffshelf.trigger = <%= env[:onoffshelf_trigger] || "true" %>
+onoffshelf.interval = <%= env[:onoffshelf_interval] || 15000 %>
+
+roleprivilege.trigger = <%= env[:roleprivilege_trigger] || "true" %>
+roleprivilege.cron = <%= env[:roleprivilege_cron] || "0 0 2 * * ?" %>
+
+qakeyword.trigger = <%= env[:qakeyword_trigger] || "true" %>
+qakeyword.cron = <%= env[:qakeyword_cron] || "0 0 * * * ?" %>

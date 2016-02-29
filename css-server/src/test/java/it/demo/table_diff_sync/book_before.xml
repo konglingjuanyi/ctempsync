@@ -1,0 +1,6 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+
+<dataset>
+	<test_table_sync id='1' name='panglaoying'/> <!-- 修改 -->
+	<test_table_sync id='2' name='amo'/>  <!-- 插入 -->
+</dataset>

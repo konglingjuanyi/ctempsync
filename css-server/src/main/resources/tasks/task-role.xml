@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 角色同步 -->
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="role.add" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.role.RoleAdd"/>
+		</property>		
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="role.delete" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.role.RoleDelete"/>
+		</property>		
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="role.update" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.role.RoleUpdate"/>
+		</property>		
+	</bean>
+
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="role.diff-sync" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.role.RoleDiffSync"/>
+		</property>		
+	</bean>
+	
+	<!-- 基本权限表-全表同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="refactor-privilege.table-diff-sync" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.role.RefactorPrivilegeTableDiffSync"/>
+		</property>		
+	</bean>
+	
+	<!-- 角色权限映射关系表-全表同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="refactor-role-privilege.table-diff-sync" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.role.RefactorRolePrivilegeTableDiffSync"/>
+		</property>		
+	</bean>
+	
+</beans>

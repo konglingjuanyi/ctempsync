@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:engine.properties, classpath:jdbc.properties, classpath:schedule.properties" />
+
+	<import resource="data-source.xml" />
+	<import resource="task-engine.xml" />
+	<import resource="task-config.xml" />
+	<import resource="task-schedule.xml"/>
+	
+	<import resource="classpath:tasks/task-author.xml" />
+	<import resource="classpath:tasks/task-role.xml" />
+	<import resource="classpath:tasks/task-operator.xml"/>
+	<import resource="classpath:tasks/task-usergroup.xml"/>
+	<import resource="classpath:tasks/task-cp.xml"/>
+	<import resource="classpath:tasks/task-book.xml"/>
+	<import resource="classpath:tasks/task-sysconfig.xml"/>
+	<import resource="classpath:tasks/task-copyright.xml"/>
+	<import resource="classpath:tasks/task-notice.xml"/>
+	<import resource="classpath:tasks/task-recommend.xml"/>
+	<import resource="classpath:tasks/task-temp.xml"/>
+	<import resource="classpath:tasks/task-qc.xml"/>
+	<import resource="classpath:tasks/task-cartoon.xml"/>
+	
+	<import resource="classpath:tasks/usecheck.xml"/>
+
+	<!-- Servlet接口的入口 -->    
+	<bean id="syncTask" class="com.cmread.cmu.css.http.server.SyncTaskServlet">
+		<property name="transportHandler" ref="syncTaskServerTransport"></property>
+	</bean>
+
+	<bean id="sqlInvoke" class="com.cmread.cmu.css.http.server.SqlInvokeServlet">
+		<property name="sqlExecutorManager" ref="sqlExecutorManager" />
+	</bean>
+
+	<bean id="syncTaskServerTransport"
+		class="com.cmread.cmu.css.http.server.HttpServerTransportHandler">
+		<property name="syncTaskServer" ref="syncTaskServer" />
+	</bean>
+
+	<bean id="cssClientHelper" class="com.cmread.cmu.css.http.client.CSSClientHelper">
+		<property name="cSSClient" ref="cssTraceClientStub"/>
+	</bean>
+	
+	<bean id="cssTraceClientStub" class="com.cmread.cmu.css.http.server.CSSTraceClientStub">
+		<property name="cSSClient" ref="cssClientStub"/>
+	</bean>
+	
+	<bean id="cssClientStub" class="com.cmread.cmu.css.http.client.CSSHttpClient">
+		<!-- 这个属性没有用 -->
+		<property name="serverURL" value="http://localhost:8080/css/notify"/>
+		<property name="transportHandler" ref="syncTaskServerTransport"/>
+	</bean>
+	
+</beans>

@@ -1,0 +1,6 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+
+<dataset>
+	<test_users userid="1" username="panglaoying" />
+	<test_users userid="2" username="chenxiaoxia" />
+</dataset>

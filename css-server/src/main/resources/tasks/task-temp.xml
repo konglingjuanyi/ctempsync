@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 这里面的同步任务，都是在共存期内的临时同步任务或者同步触发逻辑，共存期结束后，可以删除 -->
+
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="temp.operator.update" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="8" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.operator.TempOperatorUpdate">
+				<property name="cssClientHelper" ref="cssClientHelper" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="temp.qc-result-item.add" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="8" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.qc.TempQcResultItemAdd">
+				<property name="cssClientHelper" ref="cssClientHelper" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="temp.author.update" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="8" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.author.TempAuthorUpdate">
+				<property name="cssClientHelper" ref="cssClientHelper" />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- 评分维度项,新增(by name) -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="temp.recommend-evaluations.add" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="8" />
+		<property name="taskHandler">
+			<bean
+				class="com.cmread.cmu.css.service.sync.recommend.TempRecommendEvaluationAdd">
+				<property name="cssClientHelper" ref="cssClientHelper" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="temp.cp.diff-sync" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="3" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.cp.TempCpDiffSync">
+				<property name="cssClientHelper" ref="cssClientHelper" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="temp.recommand-lable.diff-sync" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="3" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.recommend.TempRecommendLableDiffSync"/>
+		</property>
+	</bean>
+
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="temp.book-series.diff-sync" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="3" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.TempBookSeriesDelete"/>
+		</property>
+	</bean>
+</beans>

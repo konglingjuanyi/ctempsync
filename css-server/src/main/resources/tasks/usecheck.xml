@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 这个文件主要定义关联性检查的任务，所有关联性任务都是实时接口，因此优先级应该定义为最高，以下统一为10； -->
+
+	<!-- 检查作家是否被使用 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="usecheck.author" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="10" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.usecheck.CommonUseCheck">
+				<property name="checkSqls">
+					<array>
+						<bean class="com.cmread.cmu.css.service.usecheck.CheckSql">
+							<property name="checkName" value="authorBookExist" />
+							<property name="dbName" value="book" />
+							<property name="sql"
+								value="select count(*) from con_auditbookinfo where bookstatus not in ('89','98','99') and authorid=$(authorid)" />
+						</bean>
+					</array>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- 推荐单元成员删除 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="usecheck.recommend-member-delete" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="10" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.usecheck.CommonUseCheck">
+				<property name="checkSqls">
+					<array>
+						<bean class="com.cmread.cmu.css.service.usecheck.CheckSql">
+							<property name="checkName" value="recommendBookExist" />
+							<property name="dbName" value="book" />
+							<property name="sql"
+								value="select count(*) from bks_recommend t, con_auditbookinfo b where b.bookid = t.bookid and b.bookstatus in ('11','12','13','14','16') and t.groupid=$(groupID) and t.auditorid=$(memberID)" />
+						</bean>
+					</array>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- 删除推荐组 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="usecheck.recommend-group-delete" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="10" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.usecheck.CommonUseCheck">
+				<property name="checkSqls">
+					<array>
+						<bean class="com.cmread.cmu.css.service.usecheck.CheckSql">
+							<property name="checkName" value="recommendBookExist" />
+							<property name="dbName" value="book" />
+							<property name="sql"
+								value="select count(*) from bks_recommend t where t.groupid=$(groupID)" />
+						</bean>
+						<bean class="com.cmread.cmu.css.service.usecheck.CheckSql">
+							<property name="checkName" value="recommendEBookExist" />
+							<property name="dbName" value="book" />
+							<property name="sql"
+								value="select count(*) from t_cmp_type_ebook where objectid in (select bookid from bks_recommend where groupid=$(groupID))" />
+						</bean>
+						<bean class="com.cmread.cmu.css.service.usecheck.CheckSql">
+							<property name="checkName" value="recommendRuleExist" />
+							<property name="dbName" value="book" />
+							<property name="sql"
+								value="select count(*) count from bks_recommend_rule t  where t.targetgroupid = $(groupID) and t.targettype in (0,2)" />
+						</bean>
+					</array>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- 删除推荐单元 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="usecheck.recommend-unit-delete" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="10" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.usecheck.CommonUseCheck">
+				<property name="checkSqls">
+					<array>
+						<bean class="com.cmread.cmu.css.service.usecheck.CheckSql">
+							<property name="checkName" value="recommendBookExist" />
+							<property name="dbName" value="book" />
+							<property name="sql"
+								value="select count(*) from bks_recommend t where t.unitid=$(groupID)" />
+						</bean>
+						<bean class="com.cmread.cmu.css.service.usecheck.CheckSql">
+							<property name="checkName" value="recommendEBookExist" />
+							<property name="dbName" value="book" />
+							<property name="sql"
+								value="select count(*) from t_cmp_type_ebook where objectid in (select bookid from bks_recommend where unitid=$(groupID))" />
+						</bean>
+						<bean class="com.cmread.cmu.css.service.usecheck.CheckSql">
+							<property name="checkName" value="recommendRuleExist" />
+							<property name="dbName" value="book" />
+							<property name="sql"
+								value="select count(*) count from bks_recommend_rule t where t.targetunitid = $(groupID)" />
+						</bean>
+					</array>
+				</property>
+			</bean>
+		</property>
+	</bean>
+</beans>

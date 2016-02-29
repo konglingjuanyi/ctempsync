@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<bean id="bookDataSource" class="net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy">
+		<constructor-arg ref="bookDataSourceSpied" />
+	</bean>
+
+	<bean id="bookDataSourceSpied" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="properties" ref="dataSourceProperties"/>
+		<property name="driverClass" value="${book.jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${book.jdbc.url}" />
+		<property name="user" value="${book.jdbc.username}" />
+	<!--<property name="password" value="${book.jdbc.password}" />-->
+		<property name="maxPoolSize" value="${book.jdbc.maxPoolSize}" />
+		<property name="minPoolSize" value="${book.jdbc.minPoolSize}" />
+		<property name="initialPoolSize" value="${book.jdbc.initialPoolSize}" />
+		<property name="maxIdleTime" value="${book.jdbc.maxIdleTime}" />
+		<property name="idleConnectionTestPeriod" value="${book.jdbc.idleConnectionTestPeriod}" />
+		<property name="acquireIncrement" value="${book.jdbc.acquireIncrement}" />
+	</bean>
+	
+	<bean id="dataSourceProperties" class="com.cmread.cmu.css.utils.security.PropertiesEncryptFactoryBean">  
+        <property name="properties">  
+            <props>  
+            	 <prop key="password">${book.jdbc.password}</prop> 
+            	 <prop key="remarksReporting">true</prop>
+            </props>  
+        </property>  
+    </bean> 
+
+	<bean id="commonDataSource" class="net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy">
+		<constructor-arg ref="commonDataSourceSpied" />
+	</bean>
+
+	<bean id="commonDataSourceSpied" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="properties" ref="dataSourceProperties2"/>
+		<property name="driverClass" value="${common.jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${common.jdbc.url}" />
+		<property name="user" value="${common.jdbc.username}" />
+	<!--<property name="password" value="${common.jdbc.password}" />-->
+
+		<property name="maxPoolSize" value="${common.jdbc.maxPoolSize}" />
+		<property name="minPoolSize" value="${common.jdbc.minPoolSize}" />
+		<property name="initialPoolSize" value="${common.jdbc.initialPoolSize}" />
+		<property name="maxIdleTime" value="${common.jdbc.maxIdleTime}" />
+		<property name="idleConnectionTestPeriod" value="${common.jdbc.idleConnectionTestPeriod}" />
+		<property name="acquireIncrement" value="${common.jdbc.acquireIncrement}" />
+	</bean>
+	
+	<bean id="dataSourceProperties2" class="com.cmread.cmu.css.utils.security.PropertiesEncryptFactoryBean">  
+        <property name="properties">  
+            <props>  
+            	 <prop key="password">${common.jdbc.password}</prop> 
+            	 <prop key="remarksReporting">true</prop>
+            </props>  
+        </property>  
+    </bean>
+    
+    <bean id="cartoonDataSource" class="net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy">
+		<constructor-arg ref="cartoonDataSourceSpied" />
+	</bean>
+
+	<bean id="cartoonDataSourceSpied" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="properties" ref="cartoonDataSourceProperties"/>
+		<property name="driverClass" value="${cartoon.jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${cartoon.jdbc.url}" />
+		<property name="user" value="${cartoon.jdbc.username}" />
+
+		<property name="maxPoolSize" value="${cartoon.jdbc.maxPoolSize}" />
+		<property name="minPoolSize" value="${cartoon.jdbc.minPoolSize}" />
+		<property name="initialPoolSize" value="${cartoon.jdbc.initialPoolSize}" />
+		<property name="maxIdleTime" value="${cartoon.jdbc.maxIdleTime}" />
+		<property name="idleConnectionTestPeriod" value="${cartoon.jdbc.idleConnectionTestPeriod}" />
+		<property name="acquireIncrement" value="${cartoon.jdbc.acquireIncrement}" />
+	</bean>
+	
+	<bean id="cartoonDataSourceProperties" class="com.cmread.cmu.css.utils.security.PropertiesEncryptFactoryBean">  
+        <property name="properties">  
+            <props>  
+            	 <prop key="password">${cartoon.jdbc.password}</prop> 
+            	 <prop key="remarksReporting">true</prop>
+            </props>  
+        </property>  
+    </bean> 
+
+	<!--     
+    <bean id="memoryDataSource" class="net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy">
+		<constructor-arg ref="memoryDataSourceSpied" />
+	</bean>
+	
+	<jdbc:embedded-database id="memoryDataSourceSpied" generate-name="true">
+		<jdbc:script location="classpath:memorydb/memorydb-schema.sql"/>
+		<jdbc:script location="classpath:memorydb/memorydb-data.sql"/>
+	</jdbc:embedded-database>
+     -->
+     
+</beans>

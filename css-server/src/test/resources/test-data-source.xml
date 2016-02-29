@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="commonDataSource" class="net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy">
+		<constructor-arg ref="commonDataSourceSpied" />
+	</bean>
+	
+	<jdbc:embedded-database id="commonDataSourceSpied" generate-name="true">
+		<jdbc:script location="classpath:css-schema.sql"/>
+	</jdbc:embedded-database>
+	
+	<bean id="bookDataSource" class="net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy">
+		<constructor-arg ref="bookDataSourceSpied" />
+	</bean>
+	
+	<jdbc:embedded-database id="bookDataSourceSpied" generate-name="true">
+	</jdbc:embedded-database>
+	
+	<bean id="cartoonDataSource" class="net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy">
+		<constructor-arg ref="cartoonDataSourceSpied" />
+	</bean>
+	
+	<jdbc:embedded-database id="cartoonDataSourceSpied" generate-name="true">
+	</jdbc:embedded-database>
+	
+	 <bean id="memoryDataSource" class="net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy">
+		<constructor-arg ref="memoryDataSourceSpied" />
+	</bean>
+	
+	<jdbc:embedded-database id="memoryDataSourceSpied" generate-name="true">
+		<jdbc:script location="classpath:memorydb/memorydb-schema.sql"/>
+	</jdbc:embedded-database>
+	
+</beans>

@@ -1,0 +1,38 @@
+
+
+<log4j>	
+
+	<appender name="sql-file"
+		class="com.huawei.bme.commons.util.BMERollingFileAppender">
+		<param name="File" value="local/sql2.log" />
+		<param name="MaxFileSize" value="50MB" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} :: %m" />
+		</layout>
+	</appender>
+	
+	<appender name="udp-sql-trigger" class="com.cmread.cmu.utils.UDPAppender">
+		<param name="RemoteHost" value="10.211.93.178" />
+		<param name="Port" value="8888" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} :: %m" />
+		</layout>
+	</appender>
+
+	<category name="jdbc.sqlonly">
+		<priority value="debug" />
+		<appender-ref ref="udp-sql-trigger" />
+	</category>
+	
+	<category name="jdbc.connection">
+		<priority value="debug" />
+		<appender-ref ref="udp-sql-trigger" />
+	</category>
+	
+	<category name="jdbc.timing">
+		<priority value="debug" />
+		<appender-ref ref="udp-sql-trigger" />
+	</category>
+	
+</log4j>

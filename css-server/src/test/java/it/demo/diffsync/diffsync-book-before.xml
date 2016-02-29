@@ -1,0 +1,10 @@
+<dataset>
+
+	<!-- 注意，这个记录修改了username和info，以及simaple_user_role中的记录变化 -->
+	
+	<simple_role roleid="121" rolename="时间掌控着（就是最牛的那个）" />
+	
+	<simple_user_role userid='1' roleid='121' info="继续老大" />
+	<simple_user_role userid='3' roleid='121' info="老三" />
+	
+</dataset>

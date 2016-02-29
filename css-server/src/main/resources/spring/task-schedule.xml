@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 触发打包同步的定时任务 -->
+	<bean id="packageTaskTrigger"
+		class="com.cmread.cmu.css.service.schedule.PackageSyncTaskTrigger">
+		<property name="sqlRegistry" ref="sqlExecutorManager" />
+		<property name="cssClientHelper" ref="cssClientHelper" />
+		<property name="notSkip" value="${package.trigger}" />
+	</bean>
+
+	<!-- 触发我的提醒(消息)的定时任务 -->
+	<bean id="noticeTaskTrigger" class="com.cmread.cmu.css.service.schedule.NoticeTaskTrigger">
+		<property name="sqlRegistry" ref="sqlExecutorManager" />
+		<property name="cssClientHelper" ref="cssClientHelper" />
+		<property name="notSkip" value="${notice.trigger}" />
+	</bean>
+
+	<!-- 触发续传章节免审表同步的定时任务 -->
+	<bean id="resumeChapNotReviewTaskTrigger"
+		class="com.cmread.cmu.css.service.schedule.ResumeChapNotReviewTaskTrigger">
+		<property name="sqlRegistry" ref="sqlExecutorManager" />
+		<property name="cssClientHelper" ref="cssClientHelper" />
+		<property name="notSkip" value="${review.trigger}" />
+	</bean>
+	
+	<!-- 触发MM话单(con_sync_book_info)同步的定时任务 -->
+	<bean id="conSyncBookInfoMoveTaskTrigger"
+		class="com.cmread.cmu.css.service.schedule.ConSyncBookInfoMoveTaskTrigger">
+		<property name="sqlRegistry" ref="sqlExecutorManager" />
+		<property name="cssClientHelper" ref="cssClientHelper" />
+		<property name="notSkip" value="${mmlogsync.trigger}" />
+	</bean>
+	
+	<!-- 触发销量排行榜同步的定时任务 -->
+	<bean id="bookRankStoreSyncTaskTrigger"
+		class="com.cmread.cmu.css.service.schedule.BookRankStoreSyncTaskTrigger">
+		<property name="sqlRegistry" ref="sqlExecutorManager" />
+		<property name="cssClientHelper" ref="cssClientHelper" />
+		<property name="notSkip" value="${bookrank.trigger}" />
+	</bean>
+
+	<!-- 清理cync_table_success表 -->
+	<bean id="clearCSyncTaskSuccessRecordTrigger"
+		class="com.cmread.cmu.css.service.schedule.ClearCSyncTaskSuccessRecord">
+		<property name="sqlRegistry" ref="sqlExecutorManager" />
+		<property name="notSkip" value="${task-clear.trigger}" />
+		<property name="reserveDays" value="${task-clear.reserveDays}" />
+	</bean>
+
+	<!-- 根据上下架记录表触发上下架同步的定时任务 -->
+	<bean id="onOffShelfBookTrigger"
+		class="com.cmread.cmu.css.service.schedule.BookOnOffShelfTrigger">
+		<property name="sqlRegistry" ref="sqlExecutorManager" />
+		<property name="cssClientHelper" ref="cssClientHelper" />
+		<property name="notSkip" value="${onoffshelf.trigger}" />
+	</bean>
+	
+	<!-- 触发权限表和角色权限映射关系表同步的定时任务 -->
+	<bean id="rolePrivilegeSyncTaskTrigger"
+		class="com.cmread.cmu.css.service.schedule.RolePrivilegeTaskTrigger">
+		<property name="sqlRegistry" ref="sqlExecutorManager" />
+		<property name="cssClientHelper" ref="cssClientHelper" />
+		<property name="notSkip" value="${roleprivilege.trigger}" />
+	</bean>
+	
+	<!-- 触发质检词库表同步的定时任务 -->
+	<bean id="qaKeyWordSyncTaskTrigger"
+		class="com.cmread.cmu.css.service.schedule.QaBadKeyWordsSyncTaskTrigger">
+		<property name="sqlRegistry" ref="sqlExecutorManager" />
+		<property name="cssClientHelper" ref="cssClientHelper" />
+		<property name="notSkip" value="${qakeyword.trigger}" />
+	</bean>
+	
+	<task:scheduled-tasks scheduler="task-schedule">
+		<task:scheduled ref="bookRankStoreSyncTaskTrigger" method="check" fixed-delay="${bookrank.interval}" initial-delay="50000" />
+		<task:scheduled ref="resumeChapNotReviewTaskTrigger" method="check" fixed-delay="${review.interval}" initial-delay="50000" />
+		<task:scheduled ref="packageTaskTrigger" method="check" fixed-delay="${package.interval}" initial-delay="10000" />
+		<task:scheduled ref="noticeTaskTrigger" method="check" fixed-delay="${notice.interval}" initial-delay="5000" />
+		<task:scheduled ref="onOffShelfBookTrigger" method="check" fixed-delay="${onoffshelf.interval}" initial-delay="1000" />
+		<task:scheduled ref="conSyncBookInfoMoveTaskTrigger" method="check" cron="${mmlogsync.cron}" />
+		<task:scheduled ref="rolePrivilegeSyncTaskTrigger" method="check" cron="${roleprivilege.cron}" />
+		<task:scheduled ref="qaKeyWordSyncTaskTrigger" method="check" cron="${qakeyword.cron}" />
+		<task:scheduled ref="clearCSyncTaskSuccessRecordTrigger" method="check" cron="0 0 1 * * ?" />
+	</task:scheduled-tasks>
+
+	<task:scheduler id="task-schedule" pool-size="2" />
+
+</beans>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+
+<dataset>
+	<!-- 所有后面加了-MOD的即为修改字段，有些状态和日期字段也做了修改 -->
+	<mcp_authorinformation 
+		AUID="1001017113" 
+		ACCOUNTID="" 
+		AUNAME="尹逊波-MOD" 
+		AUPENNAME="罂粟壳-MOD"  
+		SEX="0" 
+		BIRTHDAY="2014-05-02" 
+		AUADDRESS="山东" 
+		MARRYSTATE="1" 
+		FIRM="" 
+		POSITION="" 
+		AUMSISDN="18368023296" 
+		TELEPHONE="" 
+		POSTADDRESS="" 
+		IDCARD="998735763214011242" 
+		POSTCODE="" 
+		AUSTATUS="1" 
+		AULASTSTATUS="1" 
+		CREATEDATE="2014-05-21 14:08:35" 
+		GRADE=""
+		EMAIL="" 
+		AUCLASS="0" 
+		COUNTRY="" 
+		MSN="" 
+		QQ="2810411801" 
+		HONOR="" 
+		METHOD="1" 
+		DESCRIBE="请问企鹅" 
+		NOTES="" 
+		FILEPACKAGEID="" 
+		REPETITION="" 
+		AUTHENTICATION="3" 
+		COMMUTATIVE="" 
+		AUTHORFIRSTLETTER="Y" 
+		AUTHORGRADE="0" 
+		MSISDN="18368023296" 
+		BURSE="18368023296" 
+		CERTIFICATEPATH="identityIcon/1400653852348.jpg" 
+		UNCERTIFICATEPATH="identityIcon/1400653852353.jpg" 
+		SIGNDATE="2014-05-21 14:08:35" 
+		EXPIREDATE="[null]" 
+		PROCESSID="1150" 
+		CLAIMUSERID="6589"/>
+		
+	<!-- 修改了class -->
+	<mcp_auclassinfo AUID="1001017113" CLASS="2"/>
+	
+	<!-- 修改了MCPID的DESCRIBE -->
+	<mcp_authorandmcp AUID="1001017113" MCPID="40022" DESCRIBE="不如踢球-MOD" RELATIONCODE="1"/>
+	
+</dataset>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 作家同步 -->
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="author.audit-pass" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="5"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.author.AuthorAuditPass"/>
+		</property>		
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="author.delete" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="5"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.author.AuthorDelete"/>
+		</property>		
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="author.update" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="5"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.author.AuthorUpdate"/>
+		</property>		
+	</bean>
+
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="author.diff-sync" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="5"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.author.AuthorDiffSync"/>
+		</property>		
+	</bean>
+</beans>

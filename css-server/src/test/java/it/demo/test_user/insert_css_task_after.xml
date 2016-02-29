@@ -1,0 +1,12 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+
+<dataset>
+	<csync_task />
+	<csync_task_success tasktype="test_user.insert"
+		status="2" failedtimes="0" />
+</dataset>
+
+<!-- create table css_sync_task ( taskid varchar(16), tasktype varchar(30), 
+	contentid varchar(256), clientip varchar(15), clientstarttime timestamp, 
+	createtime timestamp, starttime timestamp, endtime timestamp, status integer, 
+	failedtimes integer, primary key (taskid) ); -->

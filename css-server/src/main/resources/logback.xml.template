@@ -1,0 +1,137 @@
+
+<!-- configuration file for LogBack (slf4J implementation)
+See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-through-the-java-loggers/ -->
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <!-- To enable JMX Management -->
+    <jmxConfigurator/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    	<encoder class="com.cmread.cmu.css.utils.LogbackTraceIDPrefixEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20.20(%thread)] %-5level - %X{dbName} %msg %n</pattern>
+		</encoder>
+    </appender>
+
+	<appender name="systemAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="com.cmread.cmu.css.utils.LogbackTaskLogFilter">
+			<taskPass>false</taskPass>
+		</filter>
+		<filter class="com.cmread.cmu.css.utils.LogbackSqlInvokeFilter">
+			<sqlInvokePass>false</sqlInvokePass>
+		</filter>
+		
+		<file> <%= env[:tomcat_log_home] %>/csync-server.log </file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern><%= env[:tomcat_log_home] %>/csync-server.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+			<!-- keep days' worth of history -->
+			<maxHistory><%= env[:log_systemlog_maxdays] || 15 %></maxHistory>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20.20(%thread)] %-5level - %X{dbName} %msg %n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="taskAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="com.cmread.cmu.css.utils.LogbackTaskLogFilter">
+			<taskPass>true</taskPass>
+		</filter>
+		
+		<file> <%= env[:tomcat_log_home] %>/csync-task.log </file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern><%= env[:tomcat_log_home] %>/csync-task.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+			<!-- keep days' worth of history -->
+			<maxHistory><%= env[:log_tasklog_maxdays] || 15 %></maxHistory>
+		</rollingPolicy>
+
+		<encoder class="com.cmread.cmu.css.utils.LogbackTraceIDPrefixEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20.20(%thread)] %-5level - %X{dbName} %msg %n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
+		<filter class="com.cmread.cmu.css.utils.LogbackSqlInvokeFilter">
+			<sqlInvokePass>false</sqlInvokePass>
+		</filter>
+		
+		<file> <%= env[:tomcat_log_home] %>/csync-error.log </file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern><%= env[:tomcat_log_home] %>/csync-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+			<!-- keep days' worth of history -->
+			<maxHistory><%= env[:log_errorlog_maxdays] || 15 %></maxHistory>
+		</rollingPolicy>
+
+		<encoder class="com.cmread.cmu.css.utils.LogbackTraceIDPrefixEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20.20(%thread)] %-5level - %X{dbName} %msg %n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="sqlInvokeAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		 <filter class="com.cmread.cmu.css.utils.LogbackSqlInvokeFilter">
+			<sqlInvokePass>true</sqlInvokePass>
+		</filter>
+		
+		<file><%= env[:tomcat_log_home] %>/csync-sqlinvoke.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern><%= env[:tomcat_log_home] %>/csync-sqlinvoke.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+			<!-- keep days' worth of history -->
+			<maxHistory><%= env[:log_sqlinvokelog_maxdays] || 15 %></maxHistory>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20.20(%thread)] %-5level - %X{dbName} %msg %n</pattern>
+		</encoder>
+	</appender>
+         
+	<appender name="taskRecordAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file><%= env[:tomcat_log_home] %>/csync-taskrecord.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern><%= env[:tomcat_log_home] %>/csync-taskrecord.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+			<!-- keep days' worth of history -->
+			<maxHistory><%= env[:log_taskrecord_maxdays] || 15 %></maxHistory>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level - %msg %n</pattern>
+		</encoder>
+	</appender>
+	
+    <root level="info">
+    	<appender-ref ref="sqlInvokeAppender"/>
+    	<appender-ref ref="taskAppender"/>
+     	<appender-ref ref="systemAppender"/>
+     	
+    	<appender-ref ref="errorAppender"/>
+    </root>
+    	
+	<logger name="csync.task.record" level="INFO">
+		<appender-ref ref="taskRecordAppender"/>
+	</logger>
+	
+    <logger name="com.cmread" level="<%= env[:log_cmread_root] || 'DEBUG' %>"/>
+    
+    <logger name="jdbc.sqlonly" level="<%= env[:log_sqlonly] || 'INFO' %>"/>
+    <logger name="jdbc.sqltiming" level="OFF"/>
+    <logger name="jdbc.audit" level="OFF"/>
+    <logger name="jdbc.resultset" level="OFF"/>
+    <logger name="jdbc.connection" level="OFF"/>
+        
+</configuration>

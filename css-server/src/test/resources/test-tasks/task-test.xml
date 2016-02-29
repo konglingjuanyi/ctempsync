@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- sync task config -->
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="test_user.insert" />
+		<property name="persistent" value="true"/>
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="it.demo.test_user.TestUserInsert"/>
+		</property>		
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="test_user.update" />
+		<property name="taskHandler">
+			<bean class="it.demo.test_user.TestUserUpdate"/>
+		</property>		
+	</bean>
+
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="test_user.delete" />
+		<property name="taskHandler">
+			<bean class="it.demo.test_user.TestUserDelete"/>
+		</property>		
+	</bean>
+
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="test_user.delete" />
+		<property name="taskHandler">
+			<bean class="it.demo.test_user.TestUserDelete"/>
+		</property>		
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="test_user.delete" />
+		<property name="taskHandler">
+			<bean class="it.demo.test_user.TestUserDelete"/>
+		</property>		
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="test_log.move" />
+		<property name="persistent" value='false'/>
+		<property name="priority" value="1"/>
+		<property name="taskHandler">
+			<bean class="it.demo.test_log.TestLogMove"/>
+		</property>		
+	</bean>
+	
+		
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="test_table_sync.diff" />
+		<property name="persistent" value='false'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="it.demo.table_diff_sync.TableDiffSync"/>
+		</property>		
+	</bean>
+	
+	<!-- 作家同步 -->
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="author.audit_pass" />
+		<property name="persistent" value='false'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.author.AuthorAuditPass"/>
+		</property>		
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="author.delete" />
+		<property name="persistent" value='false'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.author.AuthorDelete"/>
+		</property>		
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="author.update" />
+		<property name="persistent" value='false'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.author.AuthorUpdate"/>
+		</property>		
+	</bean>
+	
+	<!-- simple role 同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="simplerole.diff-sync" />
+		<property name="persistent" value='false'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="it.demo.diffsync.SimleRoleTask"/>
+		</property>		
+	</bean>
+	
+		<!-- simple role 同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="ownedplace.test" />
+		<property name="persistent" value='false'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="it.demo.ownedplace.OwnedPlaceSync"/>
+		</property>		
+	</bean>
+
+</beans>

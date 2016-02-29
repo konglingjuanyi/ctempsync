@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 图书相关同步 -->
+
+	<!-- 图书批次审核同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.auditbatch.audit-pass" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="8"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookAuditBatchPass"/>
+		</property>		
+	</bean>
+	
+	<!-- 图书打包同步 -->  
+		<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-package.complete" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="7"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookPackDone"/>
+		</property>		
+	</bean>
+
+	<!-- 重定价同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.price-reset-audit-pass" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookPriceResetAuditPass" />
+		</property>
+	</bean>	
+	
+	<!-- 推荐：推荐分级审核通过 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="recommend.booklevel.audit-pass" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.RecommandBookLevelAuditPass" />
+		</property>
+	</bean>
+	
+	<!-- 推荐：评分同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="recommend.bookgrade.update" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.RecommandBookGradeUpdate" />
+		</property>
+	</bean>
+	
+	
+	<!-- 系统分册策略同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-system-tactic.update" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="6"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookSystemTacticUpdate"/>
+		</property>		
+	</bean>
+	
+	<!-- 分册信息同步 （1、图书分册管理：增删改、启/停、调整图书分册均触发；2、自动分册定时任务完成自动分册后触发）-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-fascicule.update" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="6"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookFasciculeUpdate"/>
+		</property>		
+	</bean>
+	
+	<!--分册审核：分册审核完成后（包括通过和驳回）触发-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-fascicule.audit-pass" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="6"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookFasciculeUpdate"/>
+		</property>		
+	</bean>
+	
+	<!-- 章节隐藏 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-chapter.hide" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="6"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookChapterHide"/>
+		</property>		
+	</bean>
+	
+	<!-- 精装图书关联表同步-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-beautybook.relate" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="6"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookBeautybookRelate"/>
+		</property>		
+	</bean>	
+	
+	<!-- 删除下架图书-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-forbid-off-shelf.update" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="6"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookDeleteOffShelfUpdate"/>
+		</property>		
+	</bean>
+	
+	<!-- 内容校对：书籍卷名校验-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-volume.update" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="6"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookVolumeUpdate"/>
+		</property>		
+	</bean>
+	
+	<!-- 内容校对：章节名校验-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-chapter.name-update" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="6"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookChapterNameUpdate"/>
+		</property>		
+	</bean>
+	
+	<!-- 共用:1、内容校对：章节内容校验   2、单章导入（单章替换）-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-chapter.content-update" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="6"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookChapterContentUpdate"/>
+		</property>		
+	</bean>	
+	
+	<!-- 内容校对：基本信息校验/更新 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.information-update" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookInformationUpdate" />
+		</property>
+	</bean>
+	
+	<!-- 内容屏蔽/解除屏蔽-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.content-shield-update" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookContentShieldUpdate" />
+		</property>
+	</bean>
+	
+	<!-- 修改图书分类-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.class-update" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookClassModifyUpdate" />
+		</property>
+	</bean>
+	
+	<!-- 图书未完本设置 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.not-complete-update" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookNotCompleteUpdate" />
+		</property>
+	</bean>
+	
+	<!-- 在www门户发布更新同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.www-set-update" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookWWWSetUpdate" />
+		</property>
+	</bean>
+	
+	<!-- 价格信息同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.price-modify-update" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookPriceModifyUpdate" />
+		</property>
+	</bean>
+	 
+	<!-- 修改推荐信息/推荐语 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.recommend-info-update" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookRecommendInfomationUpdate" />
+		</property>
+	</bean>
+	
+	<!-- 关联作家同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.author-related-update" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookAuthorRelatedUpdate" />
+		</property>
+	</bean>	
+	
+	<!-- 分类信息同步（通用->图书） -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-class.diff-sync" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookClassManager" />
+		</property>
+	</bean>	
+	
+	<!-- 内容系列管理（通用->图书） -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-series.diff-sync" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.bookSeriesManage" />
+		</property>
+	</bean>	
+	
+	<!-- 系类和图书关联管理（通用->图书） -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-series-relatons.diff-sync" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.bookSeriesRelationManage" />
+		</property>
+	</bean>				
+	
+	<!-- 上下架同步：上架成功 -->
+	
+	<!-- 这个是检测上下架book是否在bks中，在的话再触发下面实际的上下架同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.onshelf.success" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="7" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookOnShelfSuccess.Checker" >
+				<property name="cSSClient" ref="cssTraceClientStub"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- 这个是实际做上下架动作的 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.onshelf.success.do" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="7" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookOnShelfSuccess" />
+		</property>
+	</bean>
+	
+	<!-- 上下架同步：批量上架成功 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-batch.onshelf.success" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="7" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.bookBatchOnShelfSuccess">
+				<property name="cSSClientHelper" ref="cssClientHelper"/>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- 上下架同步：下架成功 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.offshelf.success" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="7" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookOnShelfSuccess.Checker">
+				<property name="cSSClient" ref="cssTraceClientStub" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.offshelf.success.do" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="7" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookOffShelfSuccess"/>
+		</property>
+	</bean>
+	
+	<!-- 上下架同步：批量下架成功 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-batch.offshelf.success" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="7" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.bookBatchOffShelfSuccess">
+				<property name="cSSClientHelper" ref="cssClientHelper" />
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- 连载更新push -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.serial-push" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookSerialPush" />
+		</property>
+	</bean>
+	
+	<!-- 续传章节免审操作表的同步-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="resume-chap-not-review-oper.move" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="3" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookNotReviewMove" />
+		</property>
+	</bean>
+	
+	<!-- mm话单表同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="con_sync_book_info.move" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="3" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.ConSyncBookInfoMove" />
+		</property>
+	</bean>
+	
+	<!-- 销量排行榜-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-rank-store.move" />
+		<property name="persistent" value='false' />
+		<property name="priority" value="3" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookRankStoreMove" />
+		</property>
+	</bean>
+	
+	<!-- 抢先图书设置-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="chaper-publish-mode.sync" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="5" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.ChaperPublishModeDiffSync" />
+		</property>
+	</bean>
+	
+	<!-- 禁止图书上下架状态更新（cms->bks） -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.forbid-onoffshelf.update" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookForbitOnOffShelfUpdate" />
+		</property>
+	</bean>
+	
+	<!-- 当图书信息不一致的时候根据bookid进行全量书籍信息的同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book-all-info.diff-sync" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="5" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookAllInfoDiffSync" />
+		</property>
+	</bean>
+	
+	<!-- ********************************************************* -->
+	<!-- 以下部分属于质检相关同步，但同步内容属于图书相关内容，所以也放在这里定义 -->
+	<!-- ********************************************************* -->
+	
+	<!-- 质检-终审通过 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.qc.audit-pass" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookQcAuditPass" />
+		</property>
+	</bean>
+	
+	<!-- 质检-图书基本信息审核-推荐语审核通过 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.qc.recommend-info.audit-pass" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookRecommendInfomationUpdate" />
+		</property>
+	</bean>
+	
+	<!-- 质检-图书基本信息审核 - 简介审核通过 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.qc.introduction.audit-pass" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookInformationUpdate" />
+		</property>
+	</bean>
+	
+	<!-- 质检-图书基本信息审核 - 关键字审核通过 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.qc.keyword.audit-pass" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookInformationUpdate" />
+		</property>
+	</bean>
+	
+	<!-- 质检-图书基本信息审核 - 封面审核通过 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="book.qc.coverfile.audit-pass" />
+		<property name="persistent" value='true' />
+		<property name="priority" value="6" />
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.book.BookQcCoverFileAuditPass" />
+		</property>
+	</bean>
+	
+</beans>

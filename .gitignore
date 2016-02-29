@@ -1,0 +1,8 @@
+*/.project
+*/.settings/*
+.project
+.svn/
+*/.classpath
+*/*.log
+*/target/
+*/bin/

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<context:property-placeholder location="classpath:test-engine.properties" />
+	
+	<import resource="test-data-source.xml" />
+	<import resource="http-stub.xml" />	
+	
+	<import resource="classpath:spring/task-config.xml"/>
+	<import resource="classpath:spring/task-engine.xml" />
+
+	<!-- 同步任务定义 -->
+	<import resource="classpath:test-tasks/task-test.xml" />
+	<import resource="classpath:tasks/task-author.xml"/>
+		
+</beans>

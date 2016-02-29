@@ -1,0 +1,7 @@
+task.priorityexecutor.threadpoolsize = <%= env[:task_priorityexecutor_threadpoolsize] || 10 %> 
+
+sql.priorityexecutor.threadpoolsize = <%= env[:sql_priorityexecutor_threadpoolsize] || 10 %> 
+
+sql.limit.numbersPerSecond = <%= env[:sql_limit_numbersPerSecond] || 100 %> 
+
+persistent.global.switch = <%= env[:persistent_global_switch] || true %>

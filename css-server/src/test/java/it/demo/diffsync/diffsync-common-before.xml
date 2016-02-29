@@ -1,0 +1,9 @@
+<dataset>
+
+	<!-- 这个记录是用来测试修改的 -->
+	<simple_role roleid="121" rolename="时间掌控着" />
+	
+	<simple_user_role userid='1' roleid='121' info="老大" />
+	<simple_user_role userid='2' roleid='121' info="老二" />
+
+</dataset>

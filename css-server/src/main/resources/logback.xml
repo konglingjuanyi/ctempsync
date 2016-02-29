@@ -1,0 +1,205 @@
+
+<!-- configuration file for LogBack (slf4J implementation) See here for more 
+	details: http://gordondickens.com/wordpress/2013/03/27/sawing-through-the-java-loggers/ -->
+<configuration scan="false" scanPeriod="30 seconds">
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<!-- To enable JMX Management -->
+	<jmxConfigurator />
+
+	<!-- >%d{yyyy-MM-dd HH:mm:ss.SSS} %X{traceID} [%thread] %-5level %logger{36} 
+		- %msg%n -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- 
+		<filter class="com.cmread.cmu.css.utils.LinePrefixFilter"></filter>
+		 -->
+		<encoder class="com.cmread.cmu.css.utils.LogbackTraceIDPrefixEncoder">
+			<pattern>%caller{1}%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20.20(%thread)] %-5level - %X{dbName} %msg %n%n</pattern>
+		</encoder>
+	</appender>
+
+	<!--<logger name="org.hibernate" level="debug"/> -->
+	<!-- Uncomment and add your logger here: <logger name="org.springframework.samples.service.service" 
+		level="debug"/> -->
+
+	<appender name="serverAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 
+		<filter class="com.cmread.cmu.css.utils.LinePrefixFilter"></filter>
+		 -->
+		 
+		 <filter class="com.cmread.cmu.css.utils.LogbackTaskLogFilter">
+			<taskPass>false</taskPass>
+		</filter>
+		<filter class="com.cmread.cmu.css.utils.LogbackSqlInvokeFilter">
+			<sqlInvokePass>false</sqlInvokePass>
+		</filter>
+		
+		<file>csync-server.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>csync-server.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+			<!-- keep 7 days' worth of history -->
+			<maxHistory>5</maxHistory>
+			
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>500MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<!-- <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy"> 
+			<fileNamePattern>tests.%i.log.zip</fileNamePattern> <minIndex>1</minIndex> 
+			<maxIndex>3</maxIndex> </rollingPolicy> <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"> 
+			<maxFileSize>5MB</maxFileSize> </triggeringPolicy> -->
+
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20.20(%thread)] %-5level - %X{dbName} %msg %n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="sqlInvokeAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		 <filter class="com.cmread.cmu.css.utils.LogbackSqlInvokeFilter">
+			<sqlInvokePass>true</sqlInvokePass>
+		</filter>
+		
+		<file>csync-sqlinvoke.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>csync-sqlinvoke.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+			<!-- keep 7 days' worth of history -->
+			<maxHistory>5</maxHistory>
+			
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>500MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<!-- <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy"> 
+			<fileNamePattern>tests.%i.log.zip</fileNamePattern> <minIndex>1</minIndex> 
+			<maxIndex>3</maxIndex> </rollingPolicy> <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"> 
+			<maxFileSize>5MB</maxFileSize> </triggeringPolicy> -->
+
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20.20(%thread)] %-5level - %X{dbName} %msg %n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="taskAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		
+		<filter class="com.cmread.cmu.css.utils.LogbackTaskLogFilter">
+			<taskPass>true</taskPass>
+		</filter>
+	
+		<file>csync-task.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>csync-task.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+			<!-- keep 7 days' worth of history -->
+			<maxHistory>5</maxHistory>
+			
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>500MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<!-- <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy"> 
+			<fileNamePattern>tests.%i.log.zip</fileNamePattern> <minIndex>1</minIndex> 
+			<maxIndex>3</maxIndex> </rollingPolicy> <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"> 
+			<maxFileSize>5MB</maxFileSize> </triggeringPolicy> -->
+
+		<encoder class="com.cmread.cmu.css.utils.LogbackTraceIDPrefixEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20.20(%thread)] %-5level - %X{dbName} %msg %n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="errorAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
+		<filter class="com.cmread.cmu.css.utils.LogbackSqlInvokeFilter">
+			<sqlInvokePass>false</sqlInvokePass>
+		</filter>
+
+		<file>csync-error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>csync-error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+			<!-- keep 7 days' worth of history -->
+			<maxHistory>5</maxHistory>
+
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>500MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<!-- <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy"> 
+			<fileNamePattern>tests.%i.log.zip</fileNamePattern> <minIndex>1</minIndex> 
+			<maxIndex>3</maxIndex> </rollingPolicy> <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"> 
+			<maxFileSize>5MB</maxFileSize> </triggeringPolicy> -->
+
+		<encoder class="com.cmread.cmu.css.utils.LogbackTraceIDPrefixEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20.20(%thread)] %-5level - %X{dbName} %msg %n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="taskRecordAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>csync-taskrecord.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>csync-taskrecord.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+			<!-- keep 7 days' worth of history -->
+			<maxHistory>5</maxHistory>
+
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>500MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level - %msg %n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="sqlInvokeAppender"/>
+		<appender-ref ref="serverAppender" />
+		<appender-ref ref="console" />
+		<appender-ref ref="taskAppender"/>
+		<appender-ref ref="errorAppender"/>
+	</root>
+	
+	<logger name="csync.task.record" level="INFO">
+		<appender-ref ref="taskRecordAppender"/>
+	</logger>
+
+	<logger name="com.cmread" level="DEBUG" />
+
+	<logger name="jdbc.sqlonly" level="INFO" />
+	<logger name="jdbc.sqltiming" level="OFF" />
+	<logger name="jdbc.audit" level="OFF" />
+	<logger name="jdbc.resultset" level="OFF" />
+	<logger name="jdbc.connection" level="OFF" />
+
+</configuration>

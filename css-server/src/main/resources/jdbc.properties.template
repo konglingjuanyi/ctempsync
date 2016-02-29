@@ -1,0 +1,38 @@
+
+
+common.jdbc.driverClassName=oracle.jdbc.OracleDriver
+common.jdbc.url = <%= env[:common_jdbc_url] %>
+common.jdbc.username = <%= env[:common_jdbc_username] || 'mread' %>
+common.jdbc.password = <%= env[:common_jdbc_password] || 'J3uOyS4H2q3wqD7eMkqyvw==' %>
+
+common.jdbc.maxPoolSize = <%= env[:common_jdbc_maxPoolSize] || 20 %>
+common.jdbc.minPoolSize = 2
+common.jdbc.initialPoolSize = 3
+common.jdbc.maxIdleTime = 60
+common.jdbc.idleConnectionTestPeriod = 30
+common.jdbc.acquireIncrement = 3
+
+
+book.jdbc.driverClassName=oracle.jdbc.OracleDriver
+book.jdbc.url =  <%= env[:book_jdbc_url] %>
+book.jdbc.username = <%= env[:book_jdbc_username] || 'bks' %>
+book.jdbc.password = <%= env[:book_jdbc_password] || 'J3uOyS4H2q3wqD7eMkqyvw==' %>
+
+book.jdbc.maxPoolSize = <%= env[:book_jdbc_maxPoolSize] || 20 %>
+book.jdbc.minPoolSize = 2
+book.jdbc.initialPoolSize = 3
+book.jdbc.maxIdleTime = 60
+book.jdbc.idleConnectionTestPeriod = 30
+book.jdbc.acquireIncrement = 3
+
+cartoon.jdbc.driverClassName=oracle.jdbc.OracleDriver
+cartoon.jdbc.url =  <%= env[:cartoon_jdbc_url] %>
+cartoon.jdbc.username = <%= env[:cartoon_jdbc_username] || 'bks' %>
+cartoon.jdbc.password = <%= env[:cartoon_jdbc_password] || 'J3uOyS4H2q3wqD7eMkqyvw==' %>
+
+cartoon.jdbc.maxPoolSize = <%= env[:cartoon_jdbc_maxPoolSize] || 20 %>
+cartoon.jdbc.minPoolSize = 2
+cartoon.jdbc.initialPoolSize = 3
+cartoon.jdbc.maxIdleTime = 60
+cartoon.jdbc.idleConnectionTestPeriod = 30
+cartoon.jdbc.acquireIncrement = 3

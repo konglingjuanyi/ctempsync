@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 标签库：全表同步 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="recommend.label.table-diff-sync" />
+		<property name="persistent" value='false'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.recommend.RecommendLabelTableDiffSync"/>
+		</property>		
+	</bean>
+	
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="recommend.on-off-his.update" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="4"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.recommend.RecomendOnOffHisSync"/>
+		</property>		
+	</bean>	
+	
+	<!-- 评分维度项,新增 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="recommend-evaluations.add" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.recommend.TempRecommendEvaluationDiffSync"/>
+		</property>		
+	</bean>
+	
+	<!-- 评分维度项,删除 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="recommend-evaluations.delete" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.recommend.TempRecommendEvaluationDiffSync"/>
+		</property>		
+	</bean>
+	
+	<!-- 分类维度表更新 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="recommend-class-evaluation.update" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.recommend.TempClassEvaluationDiffSync"/>
+		</property>		
+	</bean>
+	
+	<!-- 总编管理 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="recommend-chief-editor.sync" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.recommend.TempRecommendChiefEditorDiffSync"/>
+		</property>		
+	</bean>
+	
+	<!-- 分类标签 -->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="recommend-lable.sync" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.recommend.TempRecommendLableDiffSync"/>
+		</property>		
+	</bean>
+	
+	<!-- 热门书单-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="hot-books.sync" />
+		<property name="persistent" value='false'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.recommend.TempHotBooksDiffSync"/>
+		</property>		
+	</bean>
+	
+	<!-- 总编自动审核开关-->
+	<bean parent="abstractTaskConfig">
+		<property name="taskType" value="chief-editor-status.sync" />
+		<property name="persistent" value='true'/>
+		<property name="priority" value="3"/>
+		<property name="taskHandler">
+			<bean class="com.cmread.cmu.css.service.sync.recommend.TempChiefEditorStatusDiffSync"/>
+		</property>		
+	</bean>
+	
+	
+	
+</beans>
