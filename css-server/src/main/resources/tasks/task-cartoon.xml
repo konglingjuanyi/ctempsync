@@ -12,7 +12,7 @@
 		<property name="persistent" value='true'/>
 		<property name="priority" value="5"/>
 		<property name="taskHandler">
-			<bean class="com.cmread.cmu.css.service.sync.author.AuthorAuditPass"/>
+			<bean class="com.cmread.cmu.css.service.sync.cartoon.CartoonAdd"/>
 		</property>		
 	</bean>
 	
@@ -21,7 +21,7 @@
 		<property name="persistent" value='true'/>
 		<property name="priority" value="5"/>
 		<property name="taskHandler">
-			<bean class="com.cmread.cmu.css.service.sync.author.AuthorDelete"/>
+			<bean class="com.cmread.cmu.css.service.sync.cartoon.CartoonInformationUpdate"/>
 		</property>		
 	</bean>
 	
@@ -30,7 +30,7 @@
 		<property name="persistent" value='true'/>
 		<property name="priority" value="5"/>
 		<property name="taskHandler">
-			<bean class="com.cmread.cmu.css.service.sync.author.AuthorUpdate"/>
+			<bean class="com.cmread.cmu.css.service.sync.cartoon.CartoonChapterUpdate"/>
 		</property>		
 	</bean>
 
@@ -39,7 +39,7 @@
 		<property name="persistent" value='true'/>
 		<property name="priority" value="5"/>
 		<property name="taskHandler">
-			<bean class="com.cmread.cmu.css.service.sync.author.AuthorDiffSync"/>
+			<bean class="com.cmread.cmu.css.service.sync.cartoon.CartoonChapterDelete"/>
 		</property>		
 	</bean>
 	
@@ -48,7 +48,7 @@
 		<property name="persistent" value='true'/>
 		<property name="priority" value="5"/>
 		<property name="taskHandler">
-			<bean class="com.cmread.cmu.css.service.sync.author.AuthorDiffSync"/>
+			<bean class="com.cmread.cmu.css.service.sync.cartoon.CartoonDelete"/>
 		</property>		
 	</bean>
 </beans>

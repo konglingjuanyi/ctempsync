@@ -794,7 +794,7 @@ public abstract class BaseDMHelper {
 	public static DataMapBuilder mapCartoonThumenailByBookID(String bookID, OneToOneJobBuilder job) {
 		DataMapBuilder dataMap = job.createDataMapBuilder();
 
-		String tableName = "con_cartoon_thumenail";
+		String tableName = "con_cartoon_thumbnail";
 		dataMap.from().tableName(tableName).primaryKey("bookid", "chapterid").cond("bookid", bookID);
 		dataMap.to().tableName(tableName).primaryKey("bookid", "chapterid").cond("bookid", bookID);
 
@@ -804,7 +804,7 @@ public abstract class BaseDMHelper {
 	public static DataMapBuilder mapCartoonThumenailByChapterID(String chapterID, OneToOneJobBuilder job) {
 		DataMapBuilder dataMap = job.createDataMapBuilder();
 
-		String tableName = "con_cartoon_thumenail";
+		String tableName = "con_cartoon_thumbnail";
 		dataMap.from().tableName(tableName).primaryKey("bookid", "chapterid").cond("chapterid", chapterID);
 		dataMap.to().tableName(tableName).primaryKey("bookid", "chapterid").cond("chapterid", chapterID);
 
